@@ -495,6 +495,24 @@ browsing_agent.instructions = "\n\nPlease browse the web and execute actions bas
 coding_agent = CodingAgent()
 coding_agent.instructions += "\n\nExecute code as you are instructed to."
 
+# file cleanup
+def cleanup_json_files(directory):
+    for filename in os.listdir(directory):
+        if filename.endswith(".json"):  # Check if the file is a JSON file
+            file_path = os.path.join(directory, filename)
+            try:
+                os.remove(file_path)  # Delete the file
+                print(f"Deleted JSON file: {file_path}")
+            except Exception as e:
+                print(f"Failed to delete JSON file: {file_path}. Reason: {e}")
+
+directory_to_cleanup_cayg = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/cayg"
+directory_to_cleanup_hma = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/hma"
+directory_to_cleanup_preparedness = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/preparedness"
+atexit.register(cleanup_json_files, directory_to_cleanup_cayg)
+atexit.register(cleanup_json_files, directory_to_cleanup_hma)
+atexit.register(cleanup_json_files, directory_to_cleanup_preparedness)
+
 # Define Manifesto
 agency_manifesto = """
 Manifesto:
@@ -529,24 +547,6 @@ agency_chart = [
 
 # Initialize your agents and agency outside of the main function
 agency = Agency(agency_chart, shared_instructions=agency_manifesto)
-
-# file cleanup
-def cleanup_json_files(directory):
-    for filename in os.listdir(directory):
-        if filename.endswith(".json"):  # Check if the file is a JSON file
-            file_path = os.path.join(directory, filename)
-            try:
-                os.remove(file_path)  # Delete the file
-                print(f"Deleted JSON file: {file_path}")
-            except Exception as e:
-                print(f"Failed to delete JSON file: {file_path}. Reason: {e}")
-
-directory_to_cleanup_cayg = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/cayg"
-directory_to_cleanup_hma = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/hma"
-directory_to_cleanup_preparedness = "c:/Users/Fcoon/Desktop/AI/Assistant/salesdocs/preparedness"
-atexit.register(cleanup_json_files, directory_to_cleanup_cayg)
-atexit.register(cleanup_json_files, directory_to_cleanup_hma)
-atexit.register(cleanup_json_files, directory_to_cleanup_preparedness)
 
 #demo!
 agency.demo_gradio(height=600)
